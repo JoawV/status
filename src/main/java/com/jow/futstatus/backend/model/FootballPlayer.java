@@ -2,6 +2,7 @@ package com.jow.futstatus.backend.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -15,9 +16,9 @@ public class FootballPlayer {
     private String name;
 
     @Column(name = "birth_date")
-    private Integer year;
+    private LocalDate year;
 
-    private int age;
+    private Integer age;
     private String team;
     private String nationality;
 
@@ -28,7 +29,7 @@ public class FootballPlayer {
     public FootballPlayer() {
     }
 
-    public FootballPlayer(Long id, String name, Integer year, int age, String team, String nationality, String positions, String foot) {
+    public FootballPlayer(Long id, String name, LocalDate year, Integer age, String team, String nationality, String positions, String foot) {
         this.id = id;
         this.name = name;
         this.year = year;
@@ -55,19 +56,19 @@ public class FootballPlayer {
         this.name = name;
     }
 
-    public Integer getYear() {
+    public LocalDate getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(LocalDate year) {
         this.year = year;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

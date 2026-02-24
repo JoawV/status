@@ -2,10 +2,12 @@ package com.jow.futstatus.backend.service;
 
 import com.jow.futstatus.backend.model.FootballPlayer;
 import com.jow.futstatus.backend.repository.FootballPlayerRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class FootballPlayerService {
     private final FootballPlayerRepository footballPlayerRepository;
 
