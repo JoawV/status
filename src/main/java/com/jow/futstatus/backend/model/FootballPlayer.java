@@ -18,7 +18,9 @@ public class FootballPlayer {
     @Column(name = "birth_date")
     private LocalDate year;
 
+    @Transient
     private Integer age;
+
     private String team;
     private String nationality;
 
