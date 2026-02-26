@@ -1,7 +1,7 @@
 package com.jow.futstatus.backend.model;
 
 import jakarta.persistence.*;
-
+import java.time.Period;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -16,9 +16,9 @@ public class FootballPlayer {
     private String name;
 
     @Column(name = "birth_date")
-    private LocalDate year;
+    private LocalDate birthDate;
 
-    @Transient
+    @Transient //Não vai criar a coluna "Age" na tabela
     private Integer age;
 
     private String team;
@@ -26,16 +26,16 @@ public class FootballPlayer {
 
     @Column(columnDefinition = "TEXT")
     private String positions;
+
     private String foot;
 
     public FootballPlayer() {
     }
 
-    public FootballPlayer(Long id, String name, LocalDate year, Integer age, String team, String nationality, String positions, String foot) {
+    public FootballPlayer(Long id, String name, LocalDate birthDate, String team, String nationality, String positions, String foot) {
         this.id = id;
         this.name = name;
-        this.year = year;
-        this.age = age;
+        this.birthDate = birthDate;
         this.team = team;
         this.nationality = nationality;
         this.positions = positions;
@@ -58,20 +58,19 @@ public class FootballPlayer {
         this.name = name;
     }
 
-    public LocalDate getYear() {
-        return year;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setYear(LocalDate year) {
-        this.year = year;
+    public void setBirthDate(LocalDate year) {
+        this.birthDate = year;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
+    public Integer getAge() { //Calcula automaticamente a idade. Usa a data de nascimento e a data atual para definir a idade da pessoa
+        if (this.birthDate != null) {
+            return Period.between(this.birthDate, LocalDate.now()).getYears();
+        }
+        return null;
     }
 
     public String getTeam() {
@@ -110,11 +109,11 @@ public class FootballPlayer {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         FootballPlayer that = (FootballPlayer) o;
-        return getAge() == that.getAge() && Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getYear(), that.getYear()) && Objects.equals(getTeam(), that.getTeam()) && Objects.equals(getNationality(), that.getNationality()) && Objects.equals(getPositions(), that.getPositions()) && Objects.equals(getFoot(), that.getFoot());
+        return getAge() == that.getAge() && Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getBirthDate(), that.getBirthDate()) && Objects.equals(getTeam(), that.getTeam()) && Objects.equals(getNationality(), that.getNationality()) && Objects.equals(getPositions(), that.getPositions()) && Objects.equals(getFoot(), that.getFoot());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getYear(), getAge(), getTeam(), getNationality(), getPositions(), getFoot());
+        return Objects.hash(getId(), getName(), getBirthDate(), getAge(), getTeam(), getNationality(), getPositions(), getFoot());
     }
 }
