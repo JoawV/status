@@ -21,7 +21,7 @@ public class FootballPlayer {
     @Transient //Não vai criar a coluna "Age" na tabela
     private Integer age;
 
-    private String team;
+    private Club club;
     private String nationality;
 
     @Column(columnDefinition = "TEXT")
@@ -32,11 +32,11 @@ public class FootballPlayer {
     public FootballPlayer() {
     }
 
-    public FootballPlayer(Long id, String name, LocalDate birthDate, String team, String nationality, String positions, String foot) {
+    public FootballPlayer(Long id, String name, LocalDate birthDate, Club club, String nationality, String positions, String foot) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
-        this.team = team;
+        this.club = club;
         this.nationality = nationality;
         this.positions = positions;
         this.foot = foot;
@@ -73,12 +73,12 @@ public class FootballPlayer {
         return null;
     }
 
-    public String getTeam() {
-        return team;
+    public Club getClub() {
+        return club;
     }
 
-    public void setTeam(String team) {
-        this.team = team;
+    public void setClub(Club club) {
+        this.club = club;
     }
 
     public String getNationality() {
@@ -109,11 +109,11 @@ public class FootballPlayer {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         FootballPlayer that = (FootballPlayer) o;
-        return getAge() == that.getAge() && Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getBirthDate(), that.getBirthDate()) && Objects.equals(getTeam(), that.getTeam()) && Objects.equals(getNationality(), that.getNationality()) && Objects.equals(getPositions(), that.getPositions()) && Objects.equals(getFoot(), that.getFoot());
+        return getAge() == that.getAge() && Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getBirthDate(), that.getBirthDate()) && Objects.equals(getClub(), that.getClub()) && Objects.equals(getNationality(), that.getNationality()) && Objects.equals(getPositions(), that.getPositions()) && Objects.equals(getFoot(), that.getFoot());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getBirthDate(), getAge(), getTeam(), getNationality(), getPositions(), getFoot());
+        return Objects.hash(getId(), getName(), getBirthDate(), getAge(), getClub(), getNationality(), getPositions(), getFoot());
     }
 }
