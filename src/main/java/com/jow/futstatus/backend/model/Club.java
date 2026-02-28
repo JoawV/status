@@ -24,7 +24,12 @@ public class Club {
 
     private String stadium;
     private String city;
+
+    @OneToMany(mappedBy = "club")
     private List<FootballPlayer> footballPlayerList;
+
+    @ManyToMany
+    @JoinTable(name = "club_championship", joinColumns = @JoinColumn(name = "club_id"), inverseJoinColumns = @JoinColumn(name = "championship_id"))
     private List<Championship> championshipList;
 
     public Club() {

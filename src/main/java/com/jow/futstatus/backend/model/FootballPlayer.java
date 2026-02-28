@@ -22,7 +22,10 @@ public class FootballPlayer {
     @Transient //Não vai criar a coluna "Age" na tabela
     private Integer age;
 
+    @ManyToOne
+    @JoinColumn(name = "club_id")
     private Club club;
+
     private String nationality;
 
     @Column(columnDefinition = "TEXT")
@@ -30,6 +33,7 @@ public class FootballPlayer {
 
     private String foot;
 
+    
     private List<Championship> championshipList;
 
     public FootballPlayer() {

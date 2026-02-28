@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,11 +16,11 @@ public class FootballPlayerDTO {
     private String name;
     private LocalDate birthDate;
     private Integer age;
-    private String team;
+    private ClubDTO club;
     private String nationality;
     private String positions;
     private String foot;
-    private
+    private List<ChampionshipDTO> championships;
 
     public FootballPlayerDTO() {
     }
