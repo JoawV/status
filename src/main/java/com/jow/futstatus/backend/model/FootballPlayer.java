@@ -3,6 +3,7 @@ package com.jow.futstatus.backend.model;
 import jakarta.persistence.*;
 import java.time.Period;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -29,17 +30,21 @@ public class FootballPlayer {
 
     private String foot;
 
+    private List<Championship> championshipList;
+
     public FootballPlayer() {
     }
 
-    public FootballPlayer(Long id, String name, LocalDate birthDate, Club club, String nationality, String positions, String foot) {
+    public FootballPlayer(Long id, String name, LocalDate birthDate, Integer age, Club club, String nationality, String positions, String foot, List<Championship> championshipList) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
+        this.age = age;
         this.club = club;
         this.nationality = nationality;
         this.positions = positions;
         this.foot = foot;
+        this.championshipList = championshipList;
     }
 
     public Long getId() {
@@ -73,13 +78,9 @@ public class FootballPlayer {
         return null;
     }
 
-    public Club getClub() {
-        return club;
-    }
+    public Club getClub() { return club; }
 
-    public void setClub(Club club) {
-        this.club = club;
-    }
+    public void setClub(Club club) { this.club = club; }
 
     public String getNationality() {
         return nationality;
@@ -105,15 +106,23 @@ public class FootballPlayer {
         this.foot = foot;
     }
 
+    public List<Championship> getChampionshipList() {
+        return championshipList;
+    }
+
+    public void setChampionshipList(List<Championship> championshipList) {
+        this.championshipList = championshipList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         FootballPlayer that = (FootballPlayer) o;
-        return getAge() == that.getAge() && Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getBirthDate(), that.getBirthDate()) && Objects.equals(getClub(), that.getClub()) && Objects.equals(getNationality(), that.getNationality()) && Objects.equals(getPositions(), that.getPositions()) && Objects.equals(getFoot(), that.getFoot());
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getBirthDate(), that.getBirthDate()) && Objects.equals(getAge(), that.getAge()) && Objects.equals(getClub(), that.getClub()) && Objects.equals(getNationality(), that.getNationality()) && Objects.equals(getPositions(), that.getPositions()) && Objects.equals(getFoot(), that.getFoot()) && Objects.equals(getChampionshipList(), that.getChampionshipList());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getBirthDate(), getAge(), getClub(), getNationality(), getPositions(), getFoot());
+        return Objects.hash(getId(), getName(), getBirthDate(), getAge(), getClub(), getNationality(), getPositions(), getFoot(), getChampionshipList());
     }
 }
