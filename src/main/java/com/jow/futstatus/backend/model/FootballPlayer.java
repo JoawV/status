@@ -33,7 +33,8 @@ public class FootballPlayer {
 
     private String foot;
 
-    
+    @ManyToMany
+    @JoinTable(name = "player_championship", joinColumns = @JoinColumn(name = "player_id"), inverseJoinColumns = @JoinColumn(name = "championship_id"))
     private List<Championship> championshipList;
 
     public FootballPlayer() {

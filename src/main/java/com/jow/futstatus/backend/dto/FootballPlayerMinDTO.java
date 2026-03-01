@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 public class FootballPlayerMinDTO {
     private Long id;
     private String name;
-    private String team;
+    //private String club;
     private String nationality;
     private String positions;
 
@@ -17,7 +17,7 @@ public class FootballPlayerMinDTO {
     public FootballPlayerMinDTO(FootballPlayer entity) {
         id = entity.getId();
         name = entity.getName();
-        team = entity.getTeam();
+        //club = entity.getClub();
         nationality = entity.getNationality();
         positions = entity.getPositions();
     }
@@ -25,7 +25,7 @@ public class FootballPlayerMinDTO {
     public FootballPlayerMinDTO(FootballPlayerMinProjections projection) {
         id = projection.getId();
         name = projection.getName();
-        team = projection.getTeam();
+        //team = projection.getTeam();
         nationality = projection.getNationality();
         positions = projection.getPositions();
     }
@@ -46,13 +46,9 @@ public class FootballPlayerMinDTO {
         this.name = name;
     }
 
-    public String getTeam() {
-        return team;
-    }
+    //public String getTeam() {return team;}
 
-    public void setTeam(String team) {
-        this.team = team;
-    }
+    //public void setTeam(String team) {this.team = team;}
 
     public String getNationality() {
         return nationality;

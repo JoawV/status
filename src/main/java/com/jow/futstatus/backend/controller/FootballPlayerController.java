@@ -1,5 +1,6 @@
 package com.jow.futstatus.backend.controller;
 
+import com.jow.futstatus.backend.dto.FootballPlayerDTO;
 import com.jow.futstatus.backend.model.FootballPlayer;
 import com.jow.futstatus.backend.service.FootballPlayerService;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +18,20 @@ public class FootballPlayerController {
     }
 
     @GetMapping
-    public List<FootballPlayer> listarProdutos(){
+    public List<FootballPlayerDTO> listarProdutos(){
         return footballPlayerService.listarJogador();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FootballPlayer> buscarProduto(@PathVariable Long id) {
+    public ResponseEntity<FootballPlayerDTO> buscarProduto(@PathVariable Long id) {
         return footballPlayerService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public FootballPlayer registrarJogador(@RequestBody FootballPlayer footballPlayer) {
-        return footballPlayerService.salvarJogador(footballPlayer);
+    public FootballPlayerDTO registrarJogador(@RequestBody FootballPlayerDTO dto) {
+        return footballPlayerService.salvarJogador(dto);
     }
 
     @DeleteMapping("/{id}")
