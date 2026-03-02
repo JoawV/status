@@ -121,13 +121,14 @@ public class FootballPlayer {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (!(o instanceof FootballPlayer)) return false;
         FootballPlayer that = (FootballPlayer) o;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getBirthDate(), that.getBirthDate()) && Objects.equals(getAge(), that.getAge()) && Objects.equals(getClub(), that.getClub()) && Objects.equals(getNationality(), that.getNationality()) && Objects.equals(getPositions(), that.getPositions()) && Objects.equals(getFoot(), that.getFoot()) && Objects.equals(getChampionshipList(), that.getChampionshipList());
+        return id != null && id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getBirthDate(), getAge(), getClub(), getNationality(), getPositions(), getFoot(), getChampionshipList());
+        return getClass().hashCode();
     }
 }

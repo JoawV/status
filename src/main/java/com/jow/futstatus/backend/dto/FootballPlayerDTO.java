@@ -24,6 +24,7 @@ public class FootballPlayerDTO {
 
     private Long clubId;
     private String clubName;
+    private List<Long> championshipIds;
 
     private List<ChampionshipDTO> championships;
 

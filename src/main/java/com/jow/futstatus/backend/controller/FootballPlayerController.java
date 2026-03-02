@@ -34,6 +34,16 @@ public class FootballPlayerController {
         return footballPlayerService.salvarJogador(dto);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<FootballPlayerDTO> atualizarJogador(@PathVariable Long id, @RequestBody FootballPlayerDTO dto) {
+        try {
+            FootballPlayerDTO jogadorAtualizado = footballPlayerService.atualizarJogador(id, dto);
+            return ResponseEntity.ok(jogadorAtualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarJogador(@PathVariable Long id) {
         footballPlayerService.deletarJogador(id);

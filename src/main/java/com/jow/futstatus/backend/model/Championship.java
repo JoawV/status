@@ -31,13 +31,14 @@ public class Championship {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (!(o instanceof Championship)) return false;
         Championship that = (Championship) o;
-        return getYear() == that.getYear() && Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getImgUrl(), that.getImgUrl());
+        return id != null && id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getYear(), getImgUrl());
+        return getClass().hashCode();
     }
 }

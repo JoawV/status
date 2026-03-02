@@ -47,13 +47,14 @@ public class Club {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (!(o instanceof Club)) return false;
         Club club = (Club) o;
-        return Objects.equals(getId(), club.getId()) && Objects.equals(getName(), club.getName()) && Objects.equals(getFoundationDate(), club.getFoundationDate()) && Objects.equals(getStadium(), club.getStadium()) && Objects.equals(getCity(), club.getCity()) && Objects.equals(getFootballPlayerList(), club.getFootballPlayerList()) && Objects.equals(getChampionshipList(), club.getChampionshipList());
+        return id != null && id.equals(club.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getFoundationDate(), getStadium(), getCity(), getFootballPlayerList(), getChampionshipList());
+        return getClass().hashCode();
     }
 }
