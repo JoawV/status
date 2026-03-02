@@ -1,10 +1,8 @@
 package com.jow.futstatus.backend.service;
 
 import com.jow.futstatus.backend.dto.ClubDTO;
-import com.jow.futstatus.backend.dto.FootballPlayerDTO;
 import com.jow.futstatus.backend.model.Club;
-import com.jow.futstatus.backend.model.FootballPlayer;
-import com.jow.futstatus.backend.repository.ClubProjections;
+import com.jow.futstatus.backend.repository.ClubRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -14,21 +12,21 @@ import java.util.stream.Collectors;
 
 @Service
 public class ClubService {
-    private final ClubProjections clubProjections;
+    private final ClubRepository clubRepository;
 
-    public ClubService(ClubProjections clubProjections) {
-        this.clubProjections = clubProjections;
+    public ClubService(ClubRepository clubRepository) {
+        this.clubRepository = clubRepository;
     }
 
     public List<ClubDTO> listarClubes() {
-        List<Club> players = clubProjections.findAll();
+        List<Club> players = clubRepository.findAll();
         return players.stream()
                 .map(ClubDTO::new)
                 .collect(Collectors.toList());
     }
 
     public Optional<ClubDTO> buscarClubePorId (Long id) {
-        return clubProjections.findById(id)
+        return clubRepository.findById(id)
                 .map(ClubDTO::new);
     }
 
@@ -36,12 +34,12 @@ public class ClubService {
         Club entity = new Club();
         BeanUtils.copyProperties(dto, entity);
 
-        entity = clubProjections.save(entity);
+        entity = clubRepository.save(entity);
 
         return new ClubDTO(entity);
     }
 
     public void deletarClube(Long id) {
-        clubProjections.deleteById(id);
+        clubRepository.deleteById(id);
     }
 }

@@ -1,10 +1,8 @@
 package com.jow.futstatus.backend.service;
 
 import com.jow.futstatus.backend.dto.ChampionshipDTO;
-import com.jow.futstatus.backend.dto.ClubDTO;
 import com.jow.futstatus.backend.model.Championship;
-import com.jow.futstatus.backend.model.Club;
-import com.jow.futstatus.backend.repository.ChampionshipProjections;
+import com.jow.futstatus.backend.repository.ChampionshipRepository;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
@@ -12,21 +10,21 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ChampionshipService {
-    private final ChampionshipProjections championshipProjections;
+    private final ChampionshipRepository championshipRepository;
 
-    public ChampionshipService(ChampionshipProjections championshipProjections) {
-        this.championshipProjections = championshipProjections;
+    public ChampionshipService(ChampionshipRepository championshipRepository) {
+        this.championshipRepository = championshipRepository;
     }
 
     public List<ChampionshipDTO> listarCampeonatos() {
-        List<Championship> players = championshipProjections.findAll();
+        List<Championship> players = championshipRepository.findAll();
         return players.stream()
                 .map(ChampionshipDTO::new)
                 .collect(Collectors.toList());
     }
 
     public Optional<ChampionshipDTO> buscarCampeonatoPorId (Long id) {
-        return championshipProjections.findById(id)
+        return championshipRepository.findById(id)
                 .map(ChampionshipDTO::new);
     }
 
@@ -34,12 +32,12 @@ public class ChampionshipService {
         Championship entity = new Championship();
         BeanUtils.copyProperties(dto, entity);
 
-        entity = championshipProjections.save(entity);
+        entity = championshipRepository.save(entity);
 
         return new ChampionshipDTO(entity);
     }
 
     public void deletarCampeonato(Long id) {
-        championshipProjections.deleteById(id);
+        championshipRepository.deleteById(id);
     }
 }
