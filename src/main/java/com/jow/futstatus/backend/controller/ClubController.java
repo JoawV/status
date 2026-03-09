@@ -1,7 +1,6 @@
 package com.jow.futstatus.backend.controller;
 
 import com.jow.futstatus.backend.dto.ClubDTO;
-import com.jow.futstatus.backend.dto.FootballPlayerDTO;
 import com.jow.futstatus.backend.service.ClubService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(name = "/api/clubes")
+@RequestMapping("/api/clubes")
 public class ClubController {
     private final ClubService clubService;
 

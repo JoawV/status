@@ -39,7 +39,7 @@ public class DataImportService {
             Club club = new Club();
             club.setName(row.get("club_name"));
             club.setStadium(row.get("stadium_name"));
-            club.setCity("Unknown"); // The CSV doesn't have city, so we use stadium name or leave null
+            club.setCity("country_name"); // The CSV doesn't have city, so we use stadium name or leave null
 
             Club savedClub = clubRepository.save(club); // Save the link: Transfermarkt ID -> Our Saved Club
             clubMap.put(Long.parseLong(row.get("club_id")), savedClub);

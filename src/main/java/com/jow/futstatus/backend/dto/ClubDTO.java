@@ -1,9 +1,6 @@
 package com.jow.futstatus.backend.dto;
 
-import com.jow.futstatus.backend.model.Championship;
 import com.jow.futstatus.backend.model.Club;
-import com.jow.futstatus.backend.model.FootballPlayer;
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;

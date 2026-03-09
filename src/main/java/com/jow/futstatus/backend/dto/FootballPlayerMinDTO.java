@@ -2,7 +2,6 @@ package com.jow.futstatus.backend.dto;
 
 import com.jow.futstatus.backend.model.FootballPlayer;
 import com.jow.futstatus.backend.projections.FootballPlayerMinProjections;
-import org.springframework.beans.BeanUtils;
 
 public class FootballPlayerMinDTO {
     private Long id;

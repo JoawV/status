@@ -1,7 +1,6 @@
 package com.jow.futstatus.backend.controller;
 
 import com.jow.futstatus.backend.dto.FootballPlayerDTO;
-import com.jow.futstatus.backend.model.FootballPlayer;
 import com.jow.futstatus.backend.service.FootballPlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
