@@ -28,49 +28,82 @@ public class DataImportService {
     @Transactional
     public void importFromTransfermarkt(String clubsPath, String playersPath) throws Exception {
         CsvMapper mapper = new CsvMapper();
-        CsvSchema schema = CsvSchema.emptySchema().withHeader(); // This allows us to skip columns in the CSV that aren't in our model
 
-        Map<Long, Club> clubMap = new HashMap<>(); // Maps Transfermarkt ID -> Our Database Entity
+        CsvSchema schema = CsvSchema.emptySchema()
+                .withHeader()
+                .withColumnSeparator(';')
+                .withColumnReordering(true);
 
-        MappingIterator<Map<String, String>> clubRows = mapper.readerFor(Map.class).with(schema).readValues(new File(clubsPath));
+        Map<Long, Club> clubMap = new HashMap<>();
+
+        MappingIterator<Map<String, String>> clubRows = mapper.readerFor(Map.class)
+                .with(schema).readValues(new File(clubsPath));
+
+        if (clubRows.hasNext()) {
+            Map<String, String> firstRow = clubRows.next();
+            System.out.println("DEBUG - First Club Row Content: " + firstRow); // This is key!
+            saveClubFromRow(firstRow, clubMap);
+        }
 
         while (clubRows.hasNext()) {
-            Map<String, String> row = clubRows.next();
-            Club club = new Club();
-            club.setName(row.get("club_name"));
-            club.setStadium(row.get("stadium_name"));
-            club.setCity("country_name"); // The CSV doesn't have city, so we use stadium name or leave null
-
-            Club savedClub = clubRepository.save(club); // Save the link: Transfermarkt ID -> Our Saved Club
-            clubMap.put(Long.parseLong(row.get("club_id")), savedClub);
+            saveClubFromRow(clubRows.next(), clubMap);
         }
 
-        // 2. IMPORT PLAYERS
-        MappingIterator<Map<String, String>> playerRows = mapper.readerFor(Map.class).with(schema).readValues(new File(playersPath));
+        MappingIterator<Map<String, String>> playerRows = mapper.readerFor(Map.class)
+                .with(schema).readValues(new File(playersPath));
+
+        if (playerRows.hasNext()) {
+            Map<String, String> firstRow = playerRows.next();
+            System.out.println("DEBUG - First Player Row Content: " + firstRow);
+            savePlayerFromRow(firstRow, clubMap);
+        }
 
         while (playerRows.hasNext()) {
-            Map<String, String> row = playerRows.next();
-            FootballPlayer player = new FootballPlayer();
-            player.setName(row.get("player_name"));
-            player.setNationality(row.get("citizenship"));
-            player.setPositions(row.get("main_position"));
-            player.setFoot(row.get("foot"));
-
-            // Handle Date
-            String dob = row.get("date_of_birth");
-            if (dob != null && !dob.isEmpty()) {
-                player.setBirthDate(LocalDate.parse(dob));
-            }
-
-            // LINK TO CLUB
-            String clubIdStr = row.get("current_club_id");
-            if (clubIdStr != null) {
-                Long tmClubId = Long.parseLong(clubIdStr);
-                if (clubMap.containsKey(tmClubId)) {
-                    player.setClub(clubMap.get(tmClubId));
-                }
-            }
-            footballPlayerRepository.save(player);
+            savePlayerFromRow(playerRows.next(), clubMap);
         }
+    }
+
+    private void saveClubFromRow(Map<String, String> row, Map<Long, Club> clubMap) {
+        Club club = new Club();
+        club.setName(getTrimmed(row, "club_name"));
+        club.setCity(getTrimmed(row, "country_name"));
+        club.setStadium(getTrimmed(row, "competition_name"));
+
+        Club savedClub = clubRepository.save(club);
+
+        String idStr = getTrimmed(row, "club_id");
+        if (idStr != null && !idStr.isEmpty()) {
+            clubMap.put(Long.parseLong(idStr), savedClub);
+        }
+    }
+
+    private void savePlayerFromRow(Map<String, String> row, Map<Long, Club> clubMap) {
+        FootballPlayer player = new FootballPlayer();
+        player.setName(getTrimmed(row, "player_name"));
+        player.setNationality(getTrimmed(row, "citizenship"));
+        player.setPositions(getTrimmed(row, "main_position"));
+        player.setFoot(getTrimmed(row, "foot"));
+
+        String dob = getTrimmed(row, "date_of_birth");
+        if (dob != null && !dob.isEmpty()) {
+            try { player.setBirthDate(LocalDate.parse(dob)); } catch (Exception e) {}
+        }
+
+        String clubIdStr = getTrimmed(row, "current_club_id");
+        if (clubIdStr != null && !clubIdStr.isEmpty()) {
+            Long tmId = Long.parseLong(clubIdStr);
+            if (clubMap.containsKey(tmId)) {
+                player.setClub(clubMap.get(tmId));
+            }
+        }
+        footballPlayerRepository.save(player);
+    }
+
+    private String getTrimmed(Map<String, String> row, String key) {
+        return row.entrySet().stream()
+                .filter(e -> e.getKey().trim().equalsIgnoreCase(key))
+                .map(e -> e.getValue() != null ? e.getValue().trim() : null)
+                .findFirst()
+                .orElse(null);
     }
 }
