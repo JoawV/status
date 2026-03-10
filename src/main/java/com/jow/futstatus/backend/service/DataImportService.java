@@ -28,38 +28,29 @@ public class DataImportService {
     @Transactional
     public void importFromTransfermarkt(String clubsPath, String playersPath) throws Exception {
         CsvMapper mapper = new CsvMapper();
-
-        CsvSchema schema = CsvSchema.emptySchema()
-                .withHeader()
-                .withColumnSeparator(';')
-                .withColumnReordering(true);
+        mapper.enable(com.fasterxml.jackson.dataformat.csv.CsvParser.Feature.IGNORE_TRAILING_UNMAPPABLE);
+        mapper.enable(com.fasterxml.jackson.dataformat.csv.CsvParser.Feature.INSERT_NULLS_FOR_MISSING_COLUMNS);
 
         Map<Long, Club> clubMap = new HashMap<>();
 
-        MappingIterator<Map<String, String>> clubRows = mapper.readerFor(Map.class)
-                .with(schema).readValues(new File(clubsPath));
-
-        if (clubRows.hasNext()) {
-            Map<String, String> firstRow = clubRows.next();
-            System.out.println("DEBUG - First Club Row Content: " + firstRow); // This is key!
-            saveClubFromRow(firstRow, clubMap);
-        }
-
+        CsvSchema clubSchema = CsvSchema.builder().setUseHeader(true).setColumnSeparator(',').build();
+        MappingIterator<Map<String, String>> clubRows = mapper.readerFor(Map.class).with(clubSchema).readValues(new File(clubsPath));
         while (clubRows.hasNext()) {
             saveClubFromRow(clubRows.next(), clubMap);
         }
 
-        MappingIterator<Map<String, String>> playerRows = mapper.readerFor(Map.class)
-                .with(schema).readValues(new File(playersPath));
-
-        if (playerRows.hasNext()) {
-            Map<String, String> firstRow = playerRows.next();
-            System.out.println("DEBUG - First Player Row Content: " + firstRow);
-            savePlayerFromRow(firstRow, clubMap);
-        }
+        CsvSchema playerSchema = CsvSchema.builder().setUseHeader(true).setColumnSeparator(',').build();
+        MappingIterator<Map<String, String>> playerRows = mapper.readerFor(Map.class).with(playerSchema).readValues(new File(playersPath));
 
         while (playerRows.hasNext()) {
-            savePlayerFromRow(playerRows.next(), clubMap);
+            Map<String, String> row = playerRows.next();
+
+            if (row.get("player_name") == null) {
+                System.out.println("DEBUG: Row keys received: " + row.keySet());
+                System.out.println("DEBUG: Row values: " + row.values());
+            }
+
+            savePlayerFromRow(row, clubMap);
         }
     }
 
@@ -79,22 +70,28 @@ public class DataImportService {
 
     private void savePlayerFromRow(Map<String, String> row, Map<Long, Club> clubMap) {
         FootballPlayer player = new FootballPlayer();
-        player.setName(getTrimmed(row, "player_name"));
-        player.setNationality(getTrimmed(row, "citizenship"));
-        player.setPositions(getTrimmed(row, "main_position"));
-        player.setFoot(getTrimmed(row, "foot"));
 
-        String dob = getTrimmed(row, "date_of_birth");
+        player.setName(row.get("player_name"));
+        player.setNationality(row.get("citizenship"));
+        player.setPositions(row.get("main_position"));
+        player.setFoot(row.get("foot"));
+
+        String dob = row.get("date_of_birth");
         if (dob != null && !dob.isEmpty()) {
-            try { player.setBirthDate(LocalDate.parse(dob)); } catch (Exception e) {}
+            try {
+                player.setBirthDate(LocalDate.parse(dob));
+            } catch (Exception e) {
+            }
         }
 
-        String clubIdStr = getTrimmed(row, "current_club_id");
+        String clubIdStr = row.get("current_club_id");
         if (clubIdStr != null && !clubIdStr.isEmpty()) {
-            Long tmId = Long.parseLong(clubIdStr);
-            if (clubMap.containsKey(tmId)) {
-                player.setClub(clubMap.get(tmId));
-            }
+            try {
+                Long tmId = Long.parseLong(clubIdStr.trim());
+                if (clubMap.containsKey(tmId)) {
+                    player.setClub(clubMap.get(tmId));
+                }
+            } catch (NumberFormatException e) {}
         }
         footballPlayerRepository.save(player);
     }
