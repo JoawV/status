@@ -1,38 +1,33 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document</title>
-</head>
-<body>
 <main style="padding: 20px; font-family: sans-serif;">
-  <h1>FutStatus Players</h1>
+  <h1>FutStatus Dashboard</h1>
 
-  @if (players.length === 0) {
-    <p>Loading players from backend...</p>
+  <p>Total Players Found: <strong>{{ players().length }}</strong></p>
+
+  @if (players().length === 0) {
+    <div style="padding: 20px; background: #fff3cd; border: 1px solid #ffeeba;">
+      <p>Waiting for data...</p>
+      <button (click)="loadPlayers()">Try Reloading Manually</button>
+    </div>
   } @else {
-    <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
-      <thead style="background-color: #f2f2f2;">
+    <table border="1" style="width: 100%; text-align: left; border-collapse: collapse; margin-top: 20px;">
+      <thead style="background-color: #007bff; color: white;">
       <tr>
-        <th style="padding: 8px;">Name</th>
-        <th style="padding: 8px;">Nationality</th>
-        <th style="padding: 8px;">Position</th>
-        <th style="padding: 8px;">Foot</th>
+        <th style="padding: 12px;">Name</th>
+        <th style="padding: 12px;">Nationality</th>
+        <th style="padding: 12px;">Position</th>
+        <th style="padding: 12px;">Birth Date</th>
       </tr>
       </thead>
       <tbody>
-        @for (player of players; track player.id) {
+        @for (player of players(); track player.id) {
           <tr>
-            <td style="padding: 8px;">{{ player.name }}</td>
-            <td style="padding: 8px;">{{ player.nationality }}</td>
-            <td style="padding: 8px;">{{ player.positions }}</td>
-            <td style="padding: 8px;">{{ player.foot }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ player.name }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ player.nationality }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ player.positions }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ player.birthDate }}</td>
           </tr>
         }
       </tbody>
     </table>
   }
 </main>
-</body>
-</html>

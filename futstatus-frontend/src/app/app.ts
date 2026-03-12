@@ -1,8 +1,7 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { FootballPlayer } from './models';
-import {Player} from './services/player';
+import {Component, OnInit, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {FootballPlayer} from './components/models';
+import {Player} from './components/services/player';
 
 @Component({
   selector: 'app-root',
@@ -11,21 +10,26 @@ import {CommonModule} from '@angular/common';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
+export class App implements OnInit{
   protected readonly title = signal('futstatus-frontend');
 
-  players: FootballPlayer[] = [];
+  players = signal<FootballPlayer[]>([]);
 
   constructor(private playerService: Player) {}
 
   ngOnInit() {
-    this.playerService.getPlayers().subscribe({next: (data) => {
-      this.players = data;
-        console.log('Dados recebidos!', data);
-    },
-    error: (error) => {
-      console.error('Erro ao buscar dados:', error);
-    }
+    this.loadPlayers();
+  }
+
+  loadPlayers() {
+    this.playerService.getPlayers().subscribe({
+      next: (data) => {
+        console.log('Success! Setting players signal to:', data.length);
+        this.players.set(data);
+      },
+      error: (error) => {
+        console.error('Backend is not responding:', error);
+      }
     });
   }
 }
