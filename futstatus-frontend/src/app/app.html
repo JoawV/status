@@ -6,18 +6,33 @@
   <title>Document</title>
 </head>
 <body>
-<h1>Football Players</h1>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Nationality</th>
-    <th>Position</th>
-  </tr>
-  <tr *ngFor="let p of players">
-    <td>{{ p.name }}</td>
-    <td>{{ p.nationality }}</td>
-    <td>{{ p.positions }}</td>
-  </tr>
-</table>
+<main style="padding: 20px; font-family: sans-serif;">
+  <h1>FutStatus Players</h1>
+
+  @if (players.length === 0) {
+    <p>Loading players from backend...</p>
+  } @else {
+    <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
+      <thead style="background-color: #f2f2f2;">
+      <tr>
+        <th style="padding: 8px;">Name</th>
+        <th style="padding: 8px;">Nationality</th>
+        <th style="padding: 8px;">Position</th>
+        <th style="padding: 8px;">Foot</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (player of players; track player.id) {
+          <tr>
+            <td style="padding: 8px;">{{ player.name }}</td>
+            <td style="padding: 8px;">{{ player.nationality }}</td>
+            <td style="padding: 8px;">{{ player.positions }}</td>
+            <td style="padding: 8px;">{{ player.foot }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</main>
 </body>
 </html>
