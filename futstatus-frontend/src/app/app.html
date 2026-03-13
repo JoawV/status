@@ -25,6 +25,38 @@
             <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ player.nationality }}</td>
             <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ player.positions }}</td>
             <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ player.birthDate }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ player.club }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <p>Total Players Found: <strong>{{ players().length }}</strong></p>
+
+  @if (clubs().length === 0) {
+    <div style="padding: 20px; background: #fff3cd; border: 1px solid #ffeeba;">
+      <p>Waiting for data...</p>
+      <button (click)="loadClubs()">Try Reloading Manually</button>
+    </div>
+  } @else {
+    <table border="1" style="width: 100%; text-align: left; border-collapse: collapse; margin-top: 20px;">
+      <thead style="background-color: #007bff; color: white;">
+      <tr>
+        <th style="padding: 12px;">Name</th>
+        <th style="padding: 12px;">Nationality</th>
+        <th style="padding: 12px;">Position</th>
+        <th style="padding: 12px;">Birth Date</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (club of clubs(); track club.id) {
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ club.name }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ club.foundationDate }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ club.stadium }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ club.city }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ club.footballPlayerList }}</td>
           </tr>
         }
       </tbody>
