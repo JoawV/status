@@ -20,8 +20,8 @@ public class ImportController {
     @GetMapping
     public String runImport() {
         try {
-            String clubs = "C:/Users/João/Desktop/dev/pessoal/futstatus/csv/team_details_copia.csv";
-            String players = "C:/Users/João/Desktop/dev/pessoal/futstatus/csv/player_profiles_copia.csv";
+            String clubs = "C:/Users/João/Desktop/dev/pessoal/futstatus/csv/england-premier-league-teams-2018-to-2019-stats.csv";
+            String players = "C:/Users/João/Desktop/dev/pessoal/futstatus/csv/england-premier-league-players-2018-to-2019-stats.csv";
 
             importService.importFromTransfermarkt(clubs, players);
             return "Import Successful!";

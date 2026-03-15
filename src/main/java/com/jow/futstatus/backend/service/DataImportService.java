@@ -56,8 +56,8 @@ public class DataImportService {
 
     private void saveClubFromRow(Map<String, String> row, Map<Long, Club> clubMap) {
         Club club = new Club();
-        club.setName(getTrimmed(row, "club_name"));
-        club.setCity(getTrimmed(row, "country_name"));
+        club.setName(getTrimmed(row, "team_name"));
+        club.setCity(getTrimmed(row, "country"));
         club.setStadium(getTrimmed(row, "competition_name"));
 
         Club savedClub = clubRepository.save(club);
@@ -71,12 +71,12 @@ public class DataImportService {
     private void savePlayerFromRow(Map<String, String> row, Map<Long, Club> clubMap) {
         FootballPlayer player = new FootballPlayer();
 
-        player.setName(row.get("player_name"));
-        player.setNationality(row.get("citizenship"));
-        player.setPositions(row.get("main_position"));
+        player.setName(row.get("full_name"));
+        player.setNationality(row.get("nationality"));
+        player.setPositions(row.get("position"));
         player.setFoot(row.get("foot"));
 
-        String dob = row.get("date_of_birth");
+        String dob = row.get("birthday");
         if (dob != null && !dob.isEmpty()) {
             try {
                 player.setBirthDate(LocalDate.parse(dob));
