@@ -24,7 +24,7 @@ public class Club {
     private String stadium;
     private String city;
 
-    @OneToMany(mappedBy = "club")
+    @ManyToMany(mappedBy = "clubList")
     private List<FootballPlayer> footballPlayerList;
 
     @ManyToMany

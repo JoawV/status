@@ -21,9 +21,11 @@ public class FootballPlayer {
     @Transient //Não vai criar a coluna "Age" na tabela
     private Integer age;
 
-    @ManyToOne
-    @JoinColumn(name = "club_id")
-    private Club club;
+    @ManyToMany
+    @JoinTable(name = "player_club", 
+               joinColumns = @JoinColumn(name = "player_id"), 
+               inverseJoinColumns = @JoinColumn(name = "club_id"))
+    private List<Club> clubList;
 
     private String nationality;
 
@@ -39,12 +41,12 @@ public class FootballPlayer {
     public FootballPlayer() {
     }
 
-    public FootballPlayer(Long id, String name, LocalDate birthDate, Integer age, Club club, String nationality, String positions, String foot, List<Championship> championshipList) {
+    public FootballPlayer(Long id, String name, LocalDate birthDate, Integer age, List<Club> clubList, String nationality, String positions, String foot, List<Championship> championshipList) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
         this.age = age;
-        this.club = club;
+        this.clubList = clubList;
         this.nationality = nationality;
         this.positions = positions;
         this.foot = foot;
@@ -82,9 +84,9 @@ public class FootballPlayer {
         return null;
     }
 
-    public Club getClub() { return club; }
+    public List<Club> getClubList() { return clubList; }
 
-    public void setClub(Club club) { this.club = club; }
+    public void setClubList(List<Club> clubList) { this.clubList = clubList; }
 
     public String getNationality() {
         return nationality;

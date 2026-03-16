@@ -1,6 +1,7 @@
 package com.jow.futstatus.backend.dto;
 
 import com.jow.futstatus.backend.model.FootballPlayer;
+import com.jow.futstatus.backend.model.Club;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
@@ -35,9 +36,10 @@ public class FootballPlayerDTO {
 
         this.age = entity.getAge();
 
-        if (entity.getClub() != null) {
-            this.clubId = entity.getClub().getId();
-            this.clubName = entity.getClub().getName();
+        if (entity.getClubList() != null && !entity.getClubList().isEmpty()) {
+            Club firstClub = entity.getClubList().get(0);
+            this.clubId = firstClub.getId();
+            this.clubName = firstClub.getName();
         }
 
         if (entity.getChampionshipList() != null) { // converte a lista de entidades "Championship" em DTOs

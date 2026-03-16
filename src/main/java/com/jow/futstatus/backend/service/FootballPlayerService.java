@@ -71,9 +71,9 @@ public class FootballPlayerService {
         if (dto.getClubId() != null) {
             Club club = clubRepository.findById(dto.getClubId())
                     .orElseThrow(() -> new RuntimeException("Clube não encontrado"));
-            entity.setClub(club);
+            entity.setClubList(List.of(club));
         } else {
-            entity.setClub(null);
+            entity.setClubList(null);
         }
 
         if (dto.getChampionshipIds() != null && !dto.getChampionshipIds().isEmpty()) {
