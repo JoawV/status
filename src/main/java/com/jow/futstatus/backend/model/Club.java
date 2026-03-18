@@ -1,12 +1,16 @@
 package com.jow.futstatus.backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@EqualsAndHashCode
 @Setter
 @Getter
 @Entity
@@ -16,17 +20,27 @@ public class Club {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Column(nullable = false, length = 100)
     private String name;
 
+    @NotNull
     @Column(name = "foundation_date")
     private LocalDate foundationDate;
 
+    @NotBlank
+    @Column(nullable = false, length = 100)
     private String stadium;
+
+    @NotBlank
+    @Column(nullable = false, length = 100)
     private String city;
 
+    @NotNull
     @ManyToMany(mappedBy = "clubList")
     private List<FootballPlayer> footballPlayerList;
 
+    @NotNull
     @ManyToMany
     @JoinTable(name = "club_championship", joinColumns = @JoinColumn(name = "club_id"), inverseJoinColumns = @JoinColumn(name = "championship_id"))
     private List<Championship> championshipList;
@@ -42,18 +56,5 @@ public class Club {
         this.city = city;
         this.footballPlayerList = footballPlayerList;
         this.championshipList = championshipList;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Club)) return false;
-        Club club = (Club) o;
-        return id != null && id.equals(club.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 }

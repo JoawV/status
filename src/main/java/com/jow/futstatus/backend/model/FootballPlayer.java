@@ -1,10 +1,15 @@
 package com.jow.futstatus.backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
+
 import java.time.Period;
 import java.time.LocalDate;
 import java.util.List;
 
+@EqualsAndHashCode
 @Entity
 @Table(name = "football_player")
 public class FootballPlayer {
@@ -13,27 +18,38 @@ public class FootballPlayer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Column(nullable = false, length = 100)
     private String name;
 
+    @NotNull
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @NotNull
     @Transient //Não vai criar a coluna "Age" na tabela
     private Integer age;
 
+    @NotNull
     @ManyToMany
     @JoinTable(name = "player_club", 
                joinColumns = @JoinColumn(name = "player_id"), 
                inverseJoinColumns = @JoinColumn(name = "club_id"))
     private List<Club> clubList;
 
+    @NotBlank
+    @Column(nullable = false, length = 100)
     private String nationality;
 
+    @NotBlank
     @Column(columnDefinition = "TEXT")
     private String positions;
 
+    @NotBlank
+    @Column(nullable = false, length = 50)
     private String foot;
 
+    @NotNull
     @ManyToMany
     @JoinTable(name = "player_championship", joinColumns = @JoinColumn(name = "player_id"), inverseJoinColumns = @JoinColumn(name = "championship_id"))
     private List<Championship> championshipList;
@@ -120,16 +136,4 @@ public class FootballPlayer {
         this.championshipList = championshipList;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FootballPlayer)) return false;
-        FootballPlayer that = (FootballPlayer) o;
-        return id != null && id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }
